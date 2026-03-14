@@ -399,3 +399,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Ignore this folder as it is just to remove the Quality of Kitchen Data from my PC to test if the Steam Workshop version works
+PasteInModsFolder/
