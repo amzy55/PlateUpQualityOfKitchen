@@ -88,7 +88,6 @@ namespace KitchenQualityOfKitchen // namespaces should start with Kitchen
     public class UpdateConveyors : GameSystemBase
     {
         EntityQuery ConveyorsQuery;
-        private HashSet<int> UpdatedEntities = new HashSet<int>();
         private void LogInfo(string Message)
         {
             Debug.Log(Settings.MOD_NAME_BRACKETS + " " + Settings.TIMESTAMP + Message);
@@ -103,14 +102,14 @@ namespace KitchenQualityOfKitchen // namespaces should start with Kitchen
 
         protected override void OnUpdate()
         {
+        }
+
+        public override void AfterLoading(SaveSystemType system_type)
+        {
             NativeArray<Entity> Conveyors = ConveyorsQuery.ToEntityArray(Allocator.Temp);
             float dt = Time.DeltaTime;
             foreach (Entity entity in Conveyors)
             {
-                int UniqueID = entity.Index;
-                if (UpdatedEntities.Contains(UniqueID))
-                    continue;
-
                 if (Require(entity, out CConveyPushItems grab))
                 {
                     grab.Delay = Settings.GrabDelay;
@@ -123,8 +122,7 @@ namespace KitchenQualityOfKitchen // namespaces should start with Kitchen
                     Set(entity, cooldown);
                 }
 
-                UpdatedEntities.Add(UniqueID);
-                LogInfo($"Updated conveyor/grabber with entity ID {UniqueID}");
+                LogInfo($"Updated conveyor/grabber with entity ID {entity.Index}");
             }
         }
     }
